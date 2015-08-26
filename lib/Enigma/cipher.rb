@@ -1,5 +1,7 @@
 module Enigma
   class Cipher
+    attr_reader :allowed_chars
+    
     private
       def self.allowed_chars
         allowed = []
