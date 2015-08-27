@@ -24,4 +24,9 @@ module Enigma
 end
 e = Enigma::Encrypt.new
 
-e.encrypt(ARGV[0],ARGV[1],ARGV[2], ARGV[3])
+input = ARGV[0] || input;
+output = ARGV[1] || output;
+key = ARGV[2] || key;
+offset = ARGV[3] || offset;
+
+e.encrypt(input, output, key, offset)
