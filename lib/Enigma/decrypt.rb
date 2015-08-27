@@ -52,6 +52,39 @@ module Enigma
         end
       end
       convert(sentence,nnn)
+      # nnn
+    end
+
+    def add_zeros(arr)
+      arr.map do |a|
+          if a.to_i < 10
+              '0'+a.to_s
+          else
+              a.to_s
+          end
+      end
+    end
+
+    def checker(v1,v2)
+      return v1==v2
+    end
+
+
+    def konvert(key)
+      key = add_zeros(key)
+      new_key = []
+      new_key.push(key.pop)
+      key.each do |k|
+        if checker(new_key[-1][1],k[0])
+          new_key << k
+        elsif checker(new_key[-1][1],(k.to_i+39).to_s[0])
+          new_key << (k.to_i+39).to_s
+        elsif checker(new_key[-1][1],(k.to_i+(39*2)).to_s[0])
+          new_key << (k.to_i+(39*2)).to_s
+        end
+      end
+      (new_key[0]==new_key[1]) ? new_key.shift : new_key
+      new_key[0]+new_key[1][1]+new_key[2][1]+new_key[3][1]
     end
 
     def decode_key(sentence, offset)
@@ -60,7 +93,7 @@ module Enigma
       last_message = "..end..".split("")
       key = []
       offset = offset.rotate(size+1)
-      last_chars.zip(offset.cycle,last_message) do |c, o, l|
+      last_chars.chars.zip(offset.cycle,last_message) do |c, o, l|
         c = (/\A[-+]?\d+\z/ === c) ? c.to_i : c
         39.times do |i|
           if Cipher.encrypt_letter(c, -(i.to_i+o.to_i)) == l
@@ -69,18 +102,20 @@ module Enigma
         end
       end
       start = 7-(4+size)
-      p con(sentence[-7..-1],key[start..start+4])
+      key = key[start..start+4]
+      # key = key[0]+(key[1].size==1 ? key[1] : key[1][1])+(key[2].size==1 ? key[2] : key[2][1])+(key[3].size==1 ? key[3] : key[3][1])
+      p konvert(key)
     end
 
 
     def decrypt(output_file,input_file, key=0, offset)
-      text = Reader.read(output_file).split("")
-      offset = key if ARGV.size == 2
+      offset = input_file if ARGV.size == 2
       offset = Offset.get(offset)
+      return decode_key(output_file, offset) if ARGV.size == 2
+      text = Reader.read(output_file).split("")
       keyy = Key.new
       formatted_key = keyy.formatter(key)
-      p formatted_key
-      return decode_key(text, offset) if ARGV.size == 2
+      # p formatted_key
       decrypted_text = text.zip(formatted_key.cycle, offset.cycle).collect do |a,b,c|
         char = (/\A[-+]?\d+\z/ === a) ? a.to_i : a
         Cipher.encrypt_letter(char,-(b.to_i+c.to_i))
