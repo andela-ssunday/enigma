@@ -12,14 +12,12 @@ module Enigma
       text = Reader.read(output_file).split("")
       keyy = Key.new
       formatted_key = keyy.formatter(key)
-      # p formatted_key
       decrypted_text = text.zip(formatted_key.cycle, offset.cycle).collect do |a,b,c|
         char = (/\A[-+]?\d+\z/ === a) ? a.to_i : a
         Cipher.encrypt_letter(char,-(b.to_i+c.to_i))
       end
-      # p decrypted_text.join
       Reader.output(input_file, decrypted_text.join)
-      p "Decrypted"
+      p "Decrypted "
     end
   end
 end

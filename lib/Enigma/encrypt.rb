@@ -6,7 +6,7 @@ require_relative 'reader'
 module Enigma
   class Encrypt
 
-    def encrypt(output_file,input_file, key=0, offset)
+    def encrypt(output_file,input_file)
       text = Reader.read(output_file).split("")
       offset = Offset.get
       key = Key.new
@@ -26,7 +26,6 @@ e = Enigma::Encrypt.new
 
 input = ARGV[0] || input;
 output = ARGV[1] || output;
-key = ARGV[2] || key;
-offset = ARGV[3] || offset;
 
-e.encrypt(input, output, key, offset)
+
+e.encrypt(input, output) if !output.nil?

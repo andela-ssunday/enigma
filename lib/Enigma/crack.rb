@@ -47,7 +47,7 @@ module Enigma
       # p input;return
       old_offset = offset
       offset = Offset.get(offset)
-      text = Reader.read(input).split("")
+      text = Reader.read(input).strip.gsub("\n","").split("")
       last_chars = text[-7..-1]
       size = text.size % 4
       last_message = "..end..".split("")
