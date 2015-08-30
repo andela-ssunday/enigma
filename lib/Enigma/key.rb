@@ -1,7 +1,7 @@
 module Enigma
   class Key
 
-    @@key = rand(20000..30000).to_s #generate key by random here
+    @@key = rand(10000..40000).to_s #generate key by random here
 
     def get
       return @@key

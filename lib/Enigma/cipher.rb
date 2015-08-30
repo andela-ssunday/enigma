@@ -1,9 +1,9 @@
 module Enigma
   class Cipher
-    attr_reader :allowed_chars
-    
+    attr_reader :char_map
+
     private
-      def self.allowed_chars
+      def self.char_map
         allowed = []
         allowed += ('a'..'z').to_a
         allowed += (0..9).to_a
@@ -14,8 +14,8 @@ module Enigma
       end
 
       def self.cipher(rotation)
-        rotated_chars = self.allowed_chars.rotate(rotation)
-        Hash[allowed_chars.zip(rotated_chars)]
+        rotated_chars = self.char_map.rotate(rotation)
+        Hash[char_map.zip(rotated_chars)]
       end
 
     public
