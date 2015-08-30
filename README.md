@@ -1,6 +1,6 @@
 # Enigma
 
-TODO: Write a gem description
+Encryption and Decryption engine
 
 ## Installation
 
